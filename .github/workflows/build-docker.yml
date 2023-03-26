@@ -37,6 +37,11 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build the Docker image
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
         run: |
           docker build . --tag ghcr.io/vladislavbodikov/mongodb:$DEPLOY_TAG
           docker push ghcr.io/vladislavbodikov/mongodb:$DEPLOY_TAG
