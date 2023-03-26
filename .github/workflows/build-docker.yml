@@ -39,7 +39,6 @@ jobs:
       - name: Build the Docker image
         run: |
           docker build . --tag ghcr.io/vladislavbodikov/mongodb:$DEPLOY_TAG
-          docker run ghcr.io/vladislavbodikov/mongodb:$DEPLOY_TAG
           docker push ghcr.io/vladislavbodikov/mongodb:$DEPLOY_TAG
 #      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
 #      - uses: actions/checkout@v3
