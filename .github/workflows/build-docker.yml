@@ -23,14 +23,24 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag mongodb:$DEPLOY_TAG
+        run: |
+          docker build . --tag ghcr.io/vladislavbodikov/mongodb:$DEPLOY_TAG
+          docker run ghcr.io/vladislavbodikov/mongodb:$DEPLOY_TAG
+          docker push ghcr.io/vladislavbodikov/mongodb:$DEPLOY_TAG
 #      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
 #      - uses: actions/checkout@v3
 #      - name: Login to GitHub Container Registry
@@ -49,6 +59,6 @@ jobs:
 #      # Runs a set of commands using the runners shell
 #      - name: Run a multi-line script
 #        run: |
-#          docker build . --tag ghcr.io/VladislavBodikov/mongodb:$DEPLOY_TAG
-#          docker run ghcr.io/VladislavBodikov/mongodb:$DEPLOY_TAG
-#          docker push ghcr.io/VladislavBodikov/mongodb:$DEPLOY_TAG
+#          docker build . --tag ghcr.io/vladislavbodikov/mongodb:$DEPLOY_TAG
+#          docker run ghcr.io/vladislavbodikov/mongodb:$DEPLOY_TAG
+#          docker push ghcr.io/vladislavbodikov/mongodb:$DEPLOY_TAG
